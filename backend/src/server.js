@@ -15,6 +15,9 @@ const app = express();
 const PORT = process.env.PORT || 5001;
 const __dirname = path.resolve();
 
+// Needed on Render/proxies so req.ip and x-forwarded-for resolve correctly.
+app.set("trust proxy", 1);
+
 const configuredOrigins = (process.env.CORS_ORIGIN || "")
     .split(",")
     .map((origin) => origin.trim())
