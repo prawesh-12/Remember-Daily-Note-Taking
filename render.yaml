@@ -1,0 +1,14 @@
+# https://render.com/docs/blueprint-spec
+# Repository root: buildCommand `npm run build` installs backend deps and runs
+# `vite build` into frontend/dist. If the Render service Root Directory is
+# `backend` instead, set buildCommand to: npm install && npm run build
+
+services:
+  - type: web
+    name: remember-daily-note-taking
+    runtime: node
+    buildCommand: npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production

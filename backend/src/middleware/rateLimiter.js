@@ -14,6 +14,12 @@ const getRateLimitIdentifier = (req) => {
 };
 
 const rateLimiter = async (req, res, next) => {
+    // Avoid counting or failing static asset requests (they skip express.static if
+    // the file is missing; we still should not 500 those via Upstash errors).
+    if (req.path.startsWith("/assets/")) {
+        return next();
+    }
+
     if (!isRateLimiterReady || !ratelimit) {
         return next();
     }

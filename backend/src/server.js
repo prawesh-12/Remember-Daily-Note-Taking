@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -62,6 +63,15 @@ app.use((_, res, next) => {
 app.use(express.json()); // this middleware will parse JSON bodies: req.body
 
 if (isProduction) {
+    if (!fs.existsSync(frontendDistPath)) {
+        console.error(
+            `[production] Frontend dist missing at ${frontendDistPath}. Run the root "npm run build" (builds frontend) before start.`,
+        );
+    } else if (!fs.existsSync(frontendIndexPath)) {
+        console.error(
+            `[production] index.html missing at ${frontendIndexPath}.`,
+        );
+    }
     app.use(express.static(frontendDistPath));
 }
 
@@ -77,8 +87,17 @@ app.use("/api/auth", authRoutes);
 app.use("/api/notes", authenticateUser, notesRoutes);
 
 if (isProduction) {
-    app.get("*", (req, res) => {
-        res.sendFile(frontendIndexPath);
+    app.get("*", (req, res, next) => {
+        // If express.static did not find the file, do not send index.html for real
+        // asset URLs (browser would treat HTML as CSS/JS and show MIME errors).
+        if (req.path.startsWith("/assets/")) {
+            return res.status(404).type("text/plain").send("Not found");
+        }
+        res.sendFile(frontendIndexPath, (err) => {
+            if (err) {
+                next(err);
+            }
+        });
     });
 }
 
