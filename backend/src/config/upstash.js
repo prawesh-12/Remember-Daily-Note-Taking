@@ -1,10 +1,6 @@
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
 
-import dotenv from "dotenv";
-
-dotenv.config();
-
 const isRateLimitEnabled = process.env.RATE_LIMIT_ENABLED !== "false";
 const hasUpstashCredentials = Boolean(
     process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN,

@@ -1,6 +1,6 @@
+import "./config/loadRootEnv.js";
 import express from "express";
 import cors from "cors";
-import dotenv from "dotenv";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -10,8 +10,6 @@ import authRoutes from "./routes/authRoutes.js";
 import { connectDB } from "./config/db.js";
 import rateLimiter from "./middleware/rateLimiter.js";
 import authenticateUser from "./middleware/auth.js";
-
-dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5001;
