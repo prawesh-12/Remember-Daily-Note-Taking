@@ -1,4 +1,6 @@
-import { ArrowLeftIcon, EyeIcon, PencilLineIcon } from "lucide-react";
+import ArrowLeftIcon from "lucide-react/dist/esm/icons/arrow-left.js";
+import EyeIcon from "lucide-react/dist/esm/icons/eye.js";
+import PencilLineIcon from "lucide-react/dist/esm/icons/pencil-line.js";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router";

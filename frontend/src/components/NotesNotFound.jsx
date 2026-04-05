@@ -1,4 +1,4 @@
-import { NotebookIcon } from "lucide-react";
+import NotebookIcon from "lucide-react/dist/esm/icons/notebook.js";
 import { Link } from "react-router";
 
 const NotesNotFound = () => {

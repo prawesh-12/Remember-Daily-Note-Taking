@@ -4,8 +4,5 @@ import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootEnvPath = path.resolve(__dirname, "../../../.env");
-const legacyBackendEnvPath = path.resolve(__dirname, "../../.env");
 
 dotenv.config({ path: rootEnvPath });
-// Fill any keys not set in root (e.g. you have not migrated from backend/.env yet).
-dotenv.config({ path: legacyBackendEnvPath });

@@ -1,13 +1,12 @@
+import { lazy, Suspense } from "react";
 import { Route, Routes, Navigate } from "react-router";
-
-import HomePage from "./pages/HomePage";
-import CreatePage from "./pages/CreatePage";
-import NoteDetailPage from "./pages/NoteDetailPage";
-import LoginPage from "./pages/LoginPage";
-import PageNotFound from "./pages/PageNotFound";
-
-import { GoogleOAuthProvider } from "@react-oauth/google";
 import { isAuthenticated } from "./lib/auth";
+
+const HomePage = lazy(() => import("./pages/HomePage"));
+const CreatePage = lazy(() => import("./pages/CreatePage"));
+const NoteDetailPage = lazy(() => import("./pages/NoteDetailPage"));
+const LoginPage = lazy(() => import("./pages/LoginPage"));
+const PageNotFound = lazy(() => import("./pages/PageNotFound"));
 
 const ProtectedRoute = ({ children }) => {
   if (!isAuthenticated()) {
@@ -25,29 +24,17 @@ const GuestRoute = ({ children }) => {
   return children;
 };
 
+const RouteLoader = () => (
+  <div className="min-h-screen flex items-center justify-center px-4 text-sm text-base-content/70">
+    Loading...
+  </div>
+);
+
 const App = () => {
-  const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || import.meta.env.VITE_CLIENT_ID;
-
-  if (!googleClientId) {
-    return (
-      <div className="min-h-screen flex items-center justify-center px-4 bg-base-200">
-        <div className="card max-w-lg w-full bg-base-100 shadow-xl border border-base-content/10">
-          <div className="card-body">
-            <h2 className="card-title">Missing Google OAuth Client ID</h2>
-            <p>
-              Set <strong>VITE_GOOGLE_CLIENT_ID</strong> in frontend/.env and restart the frontend
-              server.
-            </p>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <GoogleOAuthProvider clientId={googleClientId}>
-      <div className="relative h-full w-full">
-        <div className="absolute inset-0 -z-10 h-full w-full items-center px-5 py-24 [background:radial-gradient(125%_125%_at_50%_10%,#000_60%,#00FF9D40_100%)]" />
+    <div className="relative h-full w-full">
+      <div className="absolute inset-0 -z-10 h-full w-full items-center px-5 py-24 [background:radial-gradient(125%_125%_at_50%_10%,#000_60%,#00FF9D40_100%)]" />
+      <Suspense fallback={<RouteLoader />}>
         <Routes>
           <Route
             path="/login"
@@ -83,8 +70,8 @@ const App = () => {
           />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
-      </div>
-    </GoogleOAuthProvider>
+      </Suspense>
+    </div>
   );
 };
 export default App;

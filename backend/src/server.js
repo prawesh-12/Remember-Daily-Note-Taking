@@ -20,7 +20,6 @@ const __dirname = path.dirname(__filename);
 const frontendDistPath = path.resolve(__dirname, "../../frontend/dist");
 const frontendIndexPath = path.join(frontendDistPath, "index.html");
 
-// Needed on Render/proxies so req.ip and x-forwarded-for resolve correctly.
 app.set("trust proxy", 1);
 
 const configuredOrigins = (process.env.CORS_ORIGIN || "")
@@ -31,6 +30,8 @@ const configuredOrigins = (process.env.CORS_ORIGIN || "")
 const allowedOrigins = new Set([
     "http://localhost:5173",
     "http://127.0.0.1:5173",
+    `http://localhost:${PORT}`,
+    `http://127.0.0.1:${PORT}`,
     ...configuredOrigins,
 ]);
 
@@ -43,12 +44,17 @@ app.use(
                 return callback(null, true);
             }
 
+            // In production, same-origin requests (frontend served by this
+            // server) should always be allowed.
             if (allowedOrigins.has(origin)) {
                 return callback(null, true);
             }
 
+            // Log the blocked origin for debugging, but don't crash the server.
+            console.warn(`CORS blocked origin: ${origin}`);
             return callback(new Error(`Not allowed by CORS: ${origin}`));
         },
+        credentials: true,
     }),
 );
 
@@ -59,6 +65,20 @@ app.use((_, res, next) => {
     next();
 });
 app.use(express.json()); // this middleware will parse JSON bodies: req.body
+
+if (!isProduction) {
+    app.get("/", (_, res) => {
+        res.status(200).json({
+            status: "ok",
+            message:
+                "Backend API is running. Open the frontend at http://localhost:5173",
+        });
+    });
+
+    app.get("/api/health", (_, res) => {
+        res.status(200).json({ status: "ok" });
+    });
+}
 
 if (isProduction) {
     if (!fs.existsSync(frontendDistPath)) {

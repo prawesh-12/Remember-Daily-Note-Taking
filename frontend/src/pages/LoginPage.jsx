@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { useGoogleLogin } from "@react-oauth/google";
+import { GoogleOAuthProvider, useGoogleLogin } from "@react-oauth/google";
 import { useNavigate } from "react-router";
 import toast from "react-hot-toast";
 import api from "../lib/axios";
 import { setAuthSession } from "../lib/auth";
 
-const LoginPage = () => {
+const LoginPageContent = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [authError, setAuthError] = useState("");
   const navigate = useNavigate();
@@ -96,6 +96,32 @@ const LoginPage = () => {
         </div>
       </div>
     </div>
+  );
+};
+
+const LoginPage = () => {
+  const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || import.meta.env.VITE_CLIENT_ID;
+
+  if (!googleClientId) {
+    return (
+      <div className="min-h-screen flex items-center justify-center px-4 bg-base-200">
+        <div className="card max-w-lg w-full bg-base-100 shadow-xl border border-base-content/10">
+          <div className="card-body">
+            <h2 className="card-title">Missing Google OAuth Client ID</h2>
+            <p>
+              Set <strong>VITE_GOOGLE_CLIENT_ID</strong> in the root .env file and restart the
+              frontend server.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <GoogleOAuthProvider clientId={googleClientId}>
+      <LoginPageContent />
+    </GoogleOAuthProvider>
   );
 };
 

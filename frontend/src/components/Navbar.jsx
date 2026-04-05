@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
-import { LogOutIcon, PlusIcon } from "lucide-react";
+import LogOutIcon from "lucide-react/dist/esm/icons/log-out.js";
+import PlusIcon from "lucide-react/dist/esm/icons/plus.js";
 import { clearAuthSession, getAuthUser } from "../lib/auth";
 
 const Navbar = () => {

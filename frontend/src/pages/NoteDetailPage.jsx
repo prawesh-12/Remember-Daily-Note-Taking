@@ -3,7 +3,11 @@ import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
 import api from "../lib/axios";
 import toast from "react-hot-toast";
-import { ArrowLeftIcon, EyeIcon, LoaderIcon, PencilLineIcon, Trash2Icon } from "lucide-react";
+import ArrowLeftIcon from "lucide-react/dist/esm/icons/arrow-left.js";
+import EyeIcon from "lucide-react/dist/esm/icons/eye.js";
+import LoaderIcon from "lucide-react/dist/esm/icons/loader.js";
+import PencilLineIcon from "lucide-react/dist/esm/icons/pencil-line.js";
+import Trash2Icon from "lucide-react/dist/esm/icons/trash-2.js";
 import LiveNotePreview from "../components/LiveNotePreview";
 
 const NoteDetailPage = () => {

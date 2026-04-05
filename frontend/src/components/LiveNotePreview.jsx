@@ -1,4 +1,5 @@
-import { EyeIcon, FileTextIcon } from "lucide-react";
+import EyeIcon from "lucide-react/dist/esm/icons/eye.js";
+import FileTextIcon from "lucide-react/dist/esm/icons/file-text.js";
 
 const LiveNotePreview = ({ title, content, badgeText = "Live Preview" }) => {
     const cleanTitle = title.trim();

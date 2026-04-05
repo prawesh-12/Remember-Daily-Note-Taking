@@ -1,4 +1,5 @@
-import { PenSquareIcon, Trash2Icon } from "lucide-react";
+import PenSquareIcon from "lucide-react/dist/esm/icons/pen-square.js";
+import Trash2Icon from "lucide-react/dist/esm/icons/trash-2.js";
 import { Link } from "react-router";
 import { formatDate } from "../lib/utils";
 import api from "../lib/axios";
