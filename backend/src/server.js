@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import path from "path";
+import { fileURLToPath } from "url";
 
 import notesRoutes from "./routes/notesRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
@@ -13,7 +14,12 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5001;
-const __dirname = path.resolve();
+const isProduction = process.env.NODE_ENV === "production";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const frontendDistPath = path.resolve(__dirname, "../../frontend/dist");
+const frontendIndexPath = path.join(frontendDistPath, "index.html");
 
 // Needed on Render/proxies so req.ip and x-forwarded-for resolve correctly.
 app.set("trust proxy", 1);
@@ -54,6 +60,11 @@ app.use((_, res, next) => {
     next();
 });
 app.use(express.json()); // this middleware will parse JSON bodies: req.body
+
+if (isProduction) {
+    app.use(express.static(frontendDistPath));
+}
+
 app.use(rateLimiter);
 
 // simple custom middleware
@@ -65,11 +76,9 @@ app.use(rateLimiter);
 app.use("/api/auth", authRoutes);
 app.use("/api/notes", authenticateUser, notesRoutes);
 
-if (process.env.NODE_ENV === "production") {
-    app.use(express.static(path.join(__dirname, "../frontend/dist")));
-
+if (isProduction) {
     app.get("*", (req, res) => {
-        res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));
+        res.sendFile(frontendIndexPath);
     });
 }
 
