@@ -1,42 +1,23 @@
-<h1 align="center">MERN Stack Note Taking App</h1>
+<h1 align="center">Note Taking App</h1>
 
-![Demo App](/frontend/public/preview.png)
+Highlights of this project :
 
-Highlights:
-
-- Full-Stack App Built with the MERN Stack (MongoDB, Express, React, Node)
-- Create, Update, and Delete Notes with Title & Description
-- Build and Test a Fully Functional REST API
-- Rate Limiting with Upstash Redis
-- Completely Responsive UI
+- Full stack App Built with the MERN Stack (MongoDB, Express, React, Node, Upstash(Redis)).
+- Create, Update, and Delete Notes with Title & Description, with live preview.
+- Built and Tested a fully functional REST API.
+- Rate Limiting with Upstash Redis.
+- Google signin Authentication.
 
 ---
+## Preview
+<img src="./frontend/public/login_page.png" />
 
-## .env Setup
+<img src="./frontend/public/preview_main_page.png" />
 
-### Backend (`/backend`)
+<img src="./frontend/public/note_taking_page.png" />
 
-```
-MONGO_URI=<your_mongo_uri>
 
-UPSTASH_REDIS_REST_URL=<your_redis_rest_url>
-UPSTASH_REDIS_REST_TOKEN=<your_redis_rest_token>
-
-GOOGLE_CLIENT_ID=<your_google_oauth_client_id>
-GOOGLE_CLIENT_SECRET=<your_google_oauth_client_secret>
-GOOGLE_REDIRECT_URI=postmessage
-
-JWT_SECRET=<your_long_random_jwt_secret>
-
-NODE_ENV=development
-```
-
-### Frontend (`/frontend`)
-
-```
-VITE_GOOGLE_CLIENT_ID=<your_google_oauth_client_id>
-```
-
+---
 ## Run the Backend
 
 ```
@@ -52,3 +33,9 @@ cd frontend
 npm install
 npm run dev
 ```
+
+---
+## Note 
+- This project was built by me to understand the both frontend and backend working. Always i used to see the meme that people when they learn web development they usually build one project `Todo application`. So yeah, I thought let the legacy must be continued. It was fun to build this project.
+
+---
